@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>FITLOG PRO</title>
+  
+  <!-- iOS 독립형 웹앱 (PWA) 설정 -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="FITLOG">
+  <meta name="theme-color" content="#0a0d14">
+
+  <style>
+    :root {
+      --bg-dark: #0a0d14;
+      --card-bg: #131823;
+      --card-border: #1f2738;
+      --primary: #10b981;
+      --primary-glow: rgba(16, 185, 129, 0.25);
+      --accent-orange: #f59e0b;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --input-bg: #1c2333;
+      --danger: #ef4444;
+      --safe-top: env(safe-area-inset-top, 20px);
+      --safe-bottom: env(safe-area-inset-bottom, 20px);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding-top: calc(var(--safe-top) + 12px);
+      padding-bottom: calc(var(--safe-bottom) + 90px);
+      padding-left: 14px;
+      padding-right: 14px;
+    }
+
+    /* 상단 헤더 */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand-icon {
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .brand-title {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #fff;
+    }
+    .brand-title span {
+      color: var(--primary);
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .sync-status {
+      font-size: 11px;
+      color: var(--primary);
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid var(--primary-glow);
+      padding: 4px 8px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 600;
+    }
+    .dot {
+      width: 6px;
+      height: 6px;
+      background: var(--primary);
+      border-radius: 50%;
+      animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+    .btn-icon {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    /* 90초 휴식 타이머 바 (세트 완료 시 활성) */
+    #timerBanner {
+      background: linear-gradient(135deg, #13241b, #0d1a13);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.15);
+    }
+    .timer-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .timer-clock {
+      font-size: 22px;
+      font-weight: 800;
+      color: #34d399;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.5px;
+    }
+    .timer-label {
+      font-size: 11px;
+      color: #a7f3d0;
+      font-weight: 600;
+    }
+    .timer-btns {
+      display: flex;
+      gap: 6px;
+    }
+    .timer-btn {
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34d399;
+      padding: 5px 9px;
+      border-radius: 7px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* 대시보드 3대 지표 */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.1fr;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .dash-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 10px 8px;
+      text-align: center;
+    }
+    .dash-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .dash-val {
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+      font-variant-numeric: tabular-nums;
+    }
+    .dash-val.highlight {
+      color: var(--primary);
+    }
+    .dash-val.orange {
+      color: var(--accent-orange);
+    }
+
+    /* 운동 카드 */
+    .exercise-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+    .ex-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .ex-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .category-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: #1e293b;
+      color: #94a3b8;
+    }
+    .category-badge.가슴 { background: rgba(59, 130, 246, 0.18); color: #60a5fa; }
+    .category-badge.등 { background: rgba(16, 185, 129, 0.18); color: #34d399; }
+    .category-badge.하체 { background: rgba(245, 158, 11, 0.18); color: #fbbf24; }
+    .category-badge.어깨 { background: rgba(168, 85, 247, 0.18); color: #c084fc; }
+    .category-badge.팔 { background: rgba(236, 72, 153, 0.18); color: #f472b6; }
+    
+    .ex-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .btn-delete-ex {
+      background: none;
+      border: none;
+      color: #64748b;
+      font-size: 14px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    /* 세트 헤더 및 행 */
+    .set-header {
+      display: grid;
+      grid-template-columns: 36px 1fr 1fr 44px 30px;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 6px;
+      padding: 0 4px;
+    }
+    .set-row {
+      display: grid;
+      grid-template-columns: 36px 1fr 1fr 44px 30px;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 7px;
+      padding: 3px 4px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .set-num {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-align: center;
+    }
+    .set-input-wrap {
+      display: flex;
+      align-items: center;
+      background: var(--input-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 7px;
+      padding: 0 6px;
+    }
+    .set-input {
+      width: 100%;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 8px 0;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+      outline: none;
+    }
+    .unit-label {
+      font-size: 10px;
+      color: #64748b;
+      margin-left: 2px;
+    }
+    .btn-check {
+      background: var(--input-bg);
+      border: 1px solid var(--card-border);
+      color: #64748b;
+      height: 35px;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-check.completed {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #042f1a;
+      box-shadow: 0 0 10px var(--primary-glow);
+    }
+    .btn-del-set {
+      background: none;
+      border: none;
+      color: #475569;
+      font-size: 14px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    /* 카드 하단 액션 버튼 */
+    .ex-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .btn-action {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    /* 새 운동 추가 바텀 시트 버튼 */
+    .btn-add-exercise {
+      width: 100%;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #042f1a;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 4px 18px var(--primary-glow);
+      margin-top: 10px;
+    }
+
+    /* 모달 공통 */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 100;
+    }
+    .modal-box {
+      width: 100%;
+      max-width: 460px;
+      background: #141a29;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      border: 1px solid var(--card-border);
+      padding: 20px;
+      padding-bottom: calc(var(--safe-bottom) + 20px);
+      animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .modal-title {
+      font-size: 16px;
+      font-weight: 800;
+    }
+    .btn-modal-close {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .modal-body {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .modal-btn {
+      width: 100%;
+      padding: 13px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid var(--card-border);
+      background: var(--input-bg);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .modal-btn.danger {
+      background: rgba(239, 68, 68, 0.12);
+      border-color: rgba(239, 68, 68, 0.3);
+      color: #f87171;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 헤더 -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon">🏋️</div>
+      <div class="brand-title">FITLOG <span>PRO</span></div>
+    </div>
+    <div class="header-actions">
+      <div class="sync-status">
+        <div class="dot"></div>
+        <span id="saveStatus">저장됨</span>
+      </div>
+      <button class="btn-icon" onclick="openBackupModal()" title="백업/설정">⚙️</button>
+    </div>
+  </header>
+
+  <!-- 90초 자동 휴식 타이머 바 -->
+  <div id="timerBanner">
+    <div class="timer-info">
+      <span style="font-size: 20px;">⏱️</span>
+      <div>
+        <div class="timer-clock" id="timerClock">01:30</div>
+        <div class="timer-label">세트 완료 휴식 중</div>
+      </div>
+    </div>
+    <div class="timer-btns">
+      <button class="timer-btn" onclick="adjustTimer(-15)">-15초</button>
+      <button class="timer-btn" onclick="adjustTimer(15)">+15초</button>
+      <button class="timer-btn" onclick="stopTimer()">완료</button>
+    </div>
+  </div>
+
+  <!-- 대시보드 지표 -->
+  <div class="dashboard-grid">
+    <div class="dash-card">
+      <div class="dash-label">총 볼륨</div>
+      <div class="dash-val highlight" id="totalVolume">0 <span style="font-size:11px; font-weight:600;">kg</span></div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-label">완료 세트</div>
+      <div class="dash-val" id="completedSets">0 / 0</div>
+    </div>
+    <div class="dash-card" onclick="openCalorieSetting()" style="cursor: pointer;">
+      <div class="dash-label">소모 칼로리 🔥</div>
+      <div class="dash-val orange" id="totalCalories">0 <span style="font-size:11px; font-weight:600;">kcal</span></div>
+    </div>
+  </div>
+
+  <!-- 운동 목록 렌더링 영역 -->
+  <div id="exerciseList"></div>
+
+  <!-- 운동 추가 버튼 -->
+  <button class="btn-add-exercise" onclick="openAddModal()">
+    <span>+</span> 새로운 운동 추가
+  </button>
+
+  <!-- 운동 추가 모달 -->
+  <div class="modal-overlay" id="addModal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <div class="modal-title">운동 종목 추가</div>
+        <button class="btn-modal-close" onclick="closeModal('addModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="newExName" placeholder="운동 이름 (예: 벤치프레스, 스쿼트)" 
+          style="background:var(--input-bg); border:1px solid var(--card-border); color:#fff; padding:12px; border-radius:8px; font-size:15px; outline:none;">
+        <div style="display: flex; gap: 6px;">
+          <select id="newExCat" style="background:var(--input-bg); border:1px solid var(--card-border); color:#fff; padding:12px; border-radius:8px; font-size:14px; width: 100%; outline:none;">
+            <option value="가슴">가슴</option>
+            <option value="등">등</option>
+            <option value="하체">하체</option>
+            <option value="어깨">어깨</option>
+            <option value="팔">팔</option>
+          </select>
+        </div>
+        <button class="modal-btn" style="background:var(--primary); color:#042f1a; border:none; margin-top:6px;" onclick="addExerciseSubmit()">
+          추가하기
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 백업 / 초기화 모달 -->
+  <div class="modal-overlay" id="backupModal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <div class="modal-title">데이터 백업 및 설정</div>
+        <button class="btn-modal-close" onclick="closeModal('backupModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <button class="modal-btn" onclick="exportData()">
+          📤 기록 백업 파일 저장 (.json)
+        </button>
+        <button class="modal-btn" onclick="document.getElementById('fileInput').click()">
+          📥 백업 파일 불러오기
+        </button>
+        <input type="file" id="fileInput" accept=".json" style="display:none;" onchange="importData(event)">
+        <button class="modal-btn danger" onclick="resetToday()">
+          ⚠️ 오늘 운동 전체 초기화
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 기본 데이터 템플릿
+    const defaultData = {
+      startTime: Date.now(),
+      userWeight: 75,
+      exercises: [
+        {
+          id: 'ex-1',
+          name: '벤치프레스',
+          category: '가슴',
+          sets: [
+            { id: 's-1', weight: 60, reps: 10, completed: false },
+            { id: 's-2', weight: 60, reps: 10, completed: false },
+            { id: 's-3', weight: 60, reps: 8, completed: false }
+          ]
+        },
+        {
+          id: 'ex-2',
+          name: '인클라인 덤벨 프레스',
+          category: '가슴',
+          sets: [
+            { id: 's-4', weight: 20, reps: 12, completed: false },
+            { id: 's-5', weight: 20, reps: 10, completed: false }
+          ]
+        }
+      ]
+    };
+
+    let state = loadState();
+    let timerTarget = null;
+    let timerInterval = null;
+
+    // 로컬 저장소 즉시 영구화 로직
+    function loadState() {
+      try {
+        const saved = localStorage.getItem('FITLOG_PRO_STATE');
+        return saved ? JSON.parse(saved) : defaultData;
+      } catch (e) {
+        return defaultData;
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem('FITLOG_PRO_STATE', JSON.stringify(state));
+        const now = new Date();
+        const timeStr = now.toTimeString().split(' ')[0];
+        document.getElementById('saveStatus').innerText = `${timeStr} 저장됨`;
+      } catch (e) {}
+    }
+
+    // 사파리 백그라운드 킬 방어 (탭 나가거나 화면 끌 때 즉각 플러시)
+    window.addEventListener('visibilitychange', () => { if (document.hidden) saveState(); });
+    window.addEventListener('pagehide', () => saveState());
+
+    // 대시보드 통계 업데이트 (DOM 전체 재렌더링 없이 부분 갱신)
+    function updateMetrics() {
+      let totalVol = 0;
+      let compSets = 0;
+      let totalSets = 0;
+
+      state.exercises.forEach(ex => {
+        ex.sets.forEach(s => {
+          totalSets++;
+          if (s.completed) {
+            compSets++;
+            totalVol += (Number(s.weight) || 0) * (Number(s.reps) || 0);
+          }
+        });
+      });
+
+      document.getElementById('totalVolume').innerHTML = `${totalVol.toLocaleString()} <span style="font-size:11px; font-weight:600;">kg</span>`;
+      document.getElementById('completedSets').innerText = `${compSets} / ${totalSets}`;
+
+      // 칼로리 계산
+      const minutes = Math.max(1, Math.round((Date.now() - (state.startTime || Date.now())) / 60000));
+      const calories = Math.round(((minutes * 5.5 * (state.userWeight || 75)) / 60) + (compSets * 5) + (totalVol * 0.0012));
+      document.getElementById('totalCalories').innerHTML = `${calories} <span style="font-size:11px; font-weight:600;">kcal</span>`;
+    }
+
+    // 운동 카드 UI 렌더링
+    function render() {
+      const container = document.getElementById('exerciseList');
+      container.innerHTML = state.exercises.map((ex, exIdx) => `
+        <div class="exercise-card" data-exid="${ex.id}">
+          <div class="ex-header">
+            <div class="ex-title-wrap">
+              <span class="category-badge ${ex.category}">${ex.category}</span>
+              <span class="ex-name">${ex.name}</span>
+            </div>
+            <button class="btn-delete-ex" onclick="deleteExercise(${exIdx})">🗑️</button>
+          </div>
+
+          <div class="set-header">
+            <span>세트</span>
+            <span>무게</span>
+            <span>횟수</span>
+            <span>완료</span>
+            <span></span>
+          </div>
+
+          <div class="sets-list">
+            ${ex.sets.map((s, sIdx) => `
+              <div class="set-row">
+                <span class="set-num">#${sIdx + 1}</span>
+                <div class="set-input-wrap">
+                  <input type="number" class="set-input" inputmode="decimal" value="${s.weight}"
+                    oninput="handleInput('${ex.id}', '${s.id}', 'weight', this.value)">
+                  <span class="unit-label">kg</span>
+                </div>
+                <div class="set-input-wrap">
+                  <input type="number" class="set-input" inputmode="numeric" value="${s.reps}"
+                    oninput="handleInput('${ex.id}', '${s.id}', 'reps', this.value)">
+                  <span class="unit-label">회</span>
+                </div>
+                <button class="btn-check ${s.completed ? 'completed' : ''}" 
+                  onclick="toggleSet('${ex.id}', '${s.id}')">
+                  ${s.completed ? '✓' : ''}
+                </button>
+                <button class="btn-del-set" onclick="deleteSet('${ex.id}', '${s.id}')">✕</button>
+              </div>
+            `).join('')}
+          </div>
+
+          <div class="ex-actions">
+            <button class="btn-action" onclick="addSet('${ex.id}')">+ 세트 추가</button>
+            <button class="btn-action" onclick="copyLastSet('${ex.id}')">📋 세트 복제</button>
+          </div>
+        </div>
+      `).join('');
+
+      updateMetrics();
+    }
+
+    // 타이핑 시 포커스 해제 없는 0.01초 즉시 저장
+    function handleInput(exId, setId, field, val) {
+      const ex = state.exercises.find(e => e.id === exId);
+      if (!ex) return;
+      const s = ex.sets.find(st => st.id === setId);
+      if (!s) return;
+      s[field] = val;
+      saveState();
+      updateMetrics();
+    }
+
+    // 세트 완료 토글 & 90초 타이머 자동 시작
+    function toggleSet(exId, setId) {
+      const ex = state.exercises.find(e => e.id === exId);
+      if (!ex) return;
+      const s = ex.sets.find(st => st.id === setId);
+      if (!s) return;
+
+      s.completed = !s.completed;
+      saveState();
+      render();
+
+      if (s.completed) {
+        startTimer(90);
+      }
+    }
+
+    // 세트 추가 / 복제 / 삭제
+    function addSet(exId) {
+      const ex = state.exercises.find(e => e.id === exId);
+      if (!ex) return;
+      const last = ex.sets[ex.sets.length - 1] || { weight: 40, reps: 10 };
+      ex.sets.push({
+        id: 's-' + Date.now() + Math.random().toString(36).substr(2, 4),
+        weight: last.weight,
+        reps: last.reps,
+        completed: false
+      });
+      saveState();
+      render();
+    }
+
+    function copyLastSet(exId) {
+      addSet(exId);
+    }
+
+    function deleteSet(exId, setId) {
+      const ex = state.exercises.find(e => e.id === exId);
+      if (!ex) return;
+      ex.sets = ex.sets.filter(s => s.id !== setId);
+      saveState();
+      render();
+    }
+
+    function deleteExercise(exIdx) {
+      if (confirm('이 운동을 삭제할까요?')) {
+        state.exercises.splice(exIdx, 1);
+        saveState();
+        render();
+      }
+    }
+
+    // 90초 타이머 (백그라운드 복원형)
+    function startTimer(seconds) {
+      timerTarget = Date.now() + (seconds * 1000);
+      localStorage.setItem('FITLOG_TIMER_TARGET', timerTarget);
+      document.getElementById('timerBanner').style.display = 'flex';
+      
+      if (timerInterval) clearInterval(timerInterval);
+      updateTimerUI();
+      timerInterval = setInterval(updateTimerUI, 1000);
+    }
+
+    function updateTimerUI() {
+      const remain = Math.max(0, Math.round((timerTarget - Date.now()) / 1000));
+      const m = String(Math.floor(remain / 60)).padStart(2, '0');
+      const s = String(remain % 60).padStart(2, '0');
+      document.getElementById('timerClock').innerText = `${m}:${s}`;
+
+      if (remain <= 0) {
+        stopTimer();
+        beep();
+        if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+      }
+    }
+
+    function adjustTimer(diff) {
+      if (!timerTarget) return;
+      timerTarget += (diff * 1000);
+      localStorage.setItem('FITLOG_TIMER_TARGET', timerTarget);
+      updateTimerUI();
+    }
+
+    function stopTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      timerTarget = null;
+      localStorage.removeItem('FITLOG_TIMER_TARGET');
+      document.getElementById('timerBanner').style.display = 'none';
+    }
+
+    // 비프음 재생 (외부 파일 없이 브라우저 내장 Web Audio API)
+    function beep() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.frequency.value = 880;
+        gain.gain.value = 0.15;
+        osc.start();
+        osc.stop(ctx.currentTime + 0.35);
+      } catch (e) {}
+    }
+
+    // 모달 제어
+    function openAddModal() { document.getElementById('addModal').style.display = 'flex'; }
+    function openBackupModal() { document.getElementById('backupModal').style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+    function addExerciseSubmit() {
+      const name = document.getElementById('newExName').value.trim();
+      const cat = document.getElementById('newExCat').value;
+      if (!name) return alert('운동 이름을 적어주세요');
+
+      state.exercises.push({
+        id: 'ex-' + Date.now(),
+        name: name,
+        category: cat,
+        sets: [
+          { id: 's-' + Date.now() + '1', weight: 40, reps: 10, completed: false },
+          { id: 's-' + Date.now() + '2', weight: 40, reps: 10, completed: false }
+        ]
+      });
+
+      document.getElementById('newExName').value = '';
+      closeModal('addModal');
+      saveState();
+      render();
+    }
+
+    // 백업 및 복원
+    function exportData() {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `FITLOG_BACKUP_${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importData(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        try {
+          state = JSON.parse(evt.target.result);
+          saveState();
+          render();
+          closeModal('backupModal');
+          alert('기록이 정상적으로 복원되었습니다!');
+        } catch (err) {
+          alert('올바른 백업 파일이 아닙니다.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function resetToday() {
+      if (confirm('오늘 운동 기록을 모두 초기화할까요?')) {
+        state.startTime = Date.now();
+        state.exercises.forEach(ex => {
+          ex.sets.forEach(s => s.completed = false);
+        });
+        saveState();
+        render();
+        closeModal('backupModal');
+      }
+    }
+
+    // 타이머 복원 검사
+    const savedTimer = localStorage.getItem('FITLOG_TIMER_TARGET');
+    if (savedTimer && Number(savedTimer) > Date.now()) {
+      timerTarget = Number(savedTimer);
+      document.getElementById('timerBanner').style.display = 'flex';
+      updateTimerUI();
+      timerInterval = setInterval(updateTimerUI, 1000);
+    }
+
+    // 최초 렌더링
+    render();
+  </script>
+</body>
+</html>
