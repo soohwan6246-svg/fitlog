@@ -19,6 +19,7 @@
       --primary: #10b981;
       --primary-glow: rgba(16, 185, 129, 0.25);
       --accent-orange: #f59e0b;
+      --accent-blue: #3b82f6;
       --text-main: #f3f4f6;
       --text-muted: #9ca3af;
       --input-bg: #1c2333;
@@ -50,7 +51,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     .brand {
       display: flex;
@@ -118,7 +119,36 @@
       cursor: pointer;
     }
 
-    /* 90초 휴식 타이머 바 (세트 완료 시 활성) */
+    /* 탭 메뉴 (오늘 운동 / 기록 히스토리) */
+    .tab-container {
+      display: flex;
+      background: #111622;
+      border-radius: 10px;
+      padding: 3px;
+      margin-bottom: 14px;
+      border: 1px solid var(--card-border);
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 8px 0;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: var(--card-bg);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* 90초 휴식 타이머 바 */
     #timerBanner {
       background: linear-gradient(135deg, #13241b, #0d1a13);
       border: 1px solid rgba(16, 185, 129, 0.4);
@@ -140,7 +170,6 @@
       font-weight: 800;
       color: #34d399;
       font-variant-numeric: tabular-nums;
-      letter-spacing: 0.5px;
     }
     .timer-label {
       font-size: 11px;
@@ -162,12 +191,12 @@
       cursor: pointer;
     }
 
-    /* 대시보드 3대 지표 */
+    /* 대시보드 지표 */
     .dashboard-grid {
       display: grid;
       grid-template-columns: 1fr 1fr 1.1fr;
       gap: 8px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
     .dash-card {
       background: var(--card-bg);
@@ -242,7 +271,7 @@
       padding: 4px;
     }
 
-    /* 세트 헤더 및 행 */
+    /* 세트 그리드 */
     .set-header {
       display: grid;
       grid-template-columns: 36px 1fr 1fr 44px 30px;
@@ -324,7 +353,6 @@
       padding: 4px;
     }
 
-    /* 카드 하단 액션 버튼 */
     .ex-actions {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -346,15 +374,29 @@
       gap: 5px;
     }
 
-    /* 새 운동 추가 바텀 시트 버튼 */
     .btn-add-exercise {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px dashed #334155;
+      color: #94a3b8;
+      padding: 13px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 6px;
+      margin-bottom: 12px;
+    }
+
+    /* 오늘 운동 완료 & 저장 버튼 */
+    .btn-finish-workout {
       width: 100%;
       background: linear-gradient(135deg, #10b981, #059669);
       color: #042f1a;
       border: none;
-      padding: 14px;
+      padding: 15px;
       border-radius: 12px;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 800;
       cursor: pointer;
       display: flex;
@@ -362,10 +404,80 @@
       justify-content: center;
       gap: 6px;
       box-shadow: 0 4px 18px var(--primary-glow);
-      margin-top: 10px;
     }
 
-    /* 모달 공통 */
+    /* 기록(히스토리) 리스트 스타일 */
+    .history-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .history-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+    .history-date {
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .history-summary {
+      font-size: 12px;
+      color: var(--primary);
+      font-weight: 700;
+      margin-top: 3px;
+    }
+    .history-detail {
+      font-size: 12px;
+      color: #cbd5e1;
+      line-height: 1.6;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 8px;
+      margin-top: 8px;
+    }
+    .history-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .btn-history-load {
+      flex: 1;
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      color: #60a5fa;
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-history-del {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    /* 빈 상태 안내 */
+    .empty-state {
+      text-align: center;
+      padding: 50px 20px;
+      color: var(--text-muted);
+    }
+    .empty-state span {
+      font-size: 38px;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    /* 모달 */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -432,7 +544,6 @@
       background: rgba(239, 68, 68, 0.12);
       border-color: rgba(239, 68, 68, 0.3);
       color: #f87171;
-      margin-top: 6px;
     }
   </style>
 </head>
@@ -453,47 +564,66 @@
     </div>
   </header>
 
-  <!-- 90초 자동 휴식 타이머 바 -->
-  <div id="timerBanner">
-    <div class="timer-info">
-      <span style="font-size: 20px;">⏱️</span>
-      <div>
-        <div class="timer-clock" id="timerClock">01:30</div>
-        <div class="timer-label">세트 완료 휴식 중</div>
+  <!-- 탭 네비게이션 -->
+  <div class="tab-container">
+    <button class="tab-btn active" id="tabTodayBtn" onclick="switchTab('today')">오늘 운동</button>
+    <button class="tab-btn" id="tabHistoryBtn" onclick="switchTab('history')">운동 기록 (히스토리)</button>
+  </div>
+
+  <!-- [탭 1] 오늘 운동 섹션 -->
+  <div id="sectionToday">
+    <!-- 90초 자동 휴식 타이머 바 -->
+    <div id="timerBanner">
+      <div class="timer-info">
+        <span style="font-size: 20px;">⏱️</span>
+        <div>
+          <div class="timer-clock" id="timerClock">01:30</div>
+          <div class="timer-label">세트 완료 휴식 중</div>
+        </div>
+      </div>
+      <div class="timer-btns">
+        <button class="timer-btn" onclick="adjustTimer(-15)">-15초</button>
+        <button class="timer-btn" onclick="adjustTimer(15)">+15초</button>
+        <button class="timer-btn" onclick="stopTimer()">완료</button>
       </div>
     </div>
-    <div class="timer-btns">
-      <button class="timer-btn" onclick="adjustTimer(-15)">-15초</button>
-      <button class="timer-btn" onclick="adjustTimer(15)">+15초</button>
-      <button class="timer-btn" onclick="stopTimer()">완료</button>
+
+    <!-- 대시보드 지표 -->
+    <div class="dashboard-grid">
+      <div class="dash-card">
+        <div class="dash-label">총 볼륨</div>
+        <div class="dash-val highlight" id="totalVolume">0 <span style="font-size:11px; font-weight:600;">kg</span></div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-label">완료 세트</div>
+        <div class="dash-val" id="completedSets">0 / 0</div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-label">소모 칼로리 🔥</div>
+        <div class="dash-val orange" id="totalCalories">0 <span style="font-size:11px; font-weight:600;">kcal</span></div>
+      </div>
     </div>
+
+    <!-- 운동 카드 렌더링 영역 -->
+    <div id="exerciseList"></div>
+
+    <!-- 운동 추가 버튼 -->
+    <button class="btn-add-exercise" onclick="openAddModal()">
+      + 새로운 운동 종목 추가
+    </button>
+
+    <!-- 오늘 운동 완료 및 영구 저장 버튼 -->
+    <button class="btn-finish-workout" onclick="finishTodayWorkout()">
+      🏁 오늘 운동 완료 및 기록 저장
+    </button>
   </div>
 
-  <!-- 대시보드 지표 -->
-  <div class="dashboard-grid">
-    <div class="dash-card">
-      <div class="dash-label">총 볼륨</div>
-      <div class="dash-val highlight" id="totalVolume">0 <span style="font-size:11px; font-weight:600;">kg</span></div>
-    </div>
-    <div class="dash-card">
-      <div class="dash-label">완료 세트</div>
-      <div class="dash-val" id="completedSets">0 / 0</div>
-    </div>
-    <div class="dash-card" onclick="openCalorieSetting()" style="cursor: pointer;">
-      <div class="dash-label">소모 칼로리 🔥</div>
-      <div class="dash-val orange" id="totalCalories">0 <span style="font-size:11px; font-weight:600;">kcal</span></div>
-    </div>
+  <!-- [탭 2] 운동 기록 (히스토리) 섹션 -->
+  <div id="sectionHistory" style="display: none;">
+    <div id="historyList"></div>
   </div>
 
-  <!-- 운동 목록 렌더링 영역 -->
-  <div id="exerciseList"></div>
-
-  <!-- 운동 추가 버튼 -->
-  <button class="btn-add-exercise" onclick="openAddModal()">
-    <span>+</span> 새로운 운동 추가
-  </button>
-
-  <!-- 운동 추가 모달 -->
+  <!-- 종목 추가 모달 -->
   <div class="modal-overlay" id="addModal">
     <div class="modal-box">
       <div class="modal-head">
@@ -503,15 +633,13 @@
       <div class="modal-body">
         <input type="text" id="newExName" placeholder="운동 이름 (예: 벤치프레스, 스쿼트)" 
           style="background:var(--input-bg); border:1px solid var(--card-border); color:#fff; padding:12px; border-radius:8px; font-size:15px; outline:none;">
-        <div style="display: flex; gap: 6px;">
-          <select id="newExCat" style="background:var(--input-bg); border:1px solid var(--card-border); color:#fff; padding:12px; border-radius:8px; font-size:14px; width: 100%; outline:none;">
-            <option value="가슴">가슴</option>
-            <option value="등">등</option>
-            <option value="하체">하체</option>
-            <option value="어깨">어깨</option>
-            <option value="팔">팔</option>
-          </select>
-        </div>
+        <select id="newExCat" style="background:var(--input-bg); border:1px solid var(--card-border); color:#fff; padding:12px; border-radius:8px; font-size:14px; width: 100%; outline:none;">
+          <option value="가슴">가슴</option>
+          <option value="등">등</option>
+          <option value="하체">하체</option>
+          <option value="어깨">어깨</option>
+          <option value="팔">팔</option>
+        </select>
         <button class="modal-btn" style="background:var(--primary); color:#042f1a; border:none; margin-top:6px;" onclick="addExerciseSubmit()">
           추가하기
         </button>
@@ -523,26 +651,26 @@
   <div class="modal-overlay" id="backupModal">
     <div class="modal-box">
       <div class="modal-head">
-        <div class="modal-title">데이터 백업 및 설정</div>
+        <div class="modal-title">백업 및 설정</div>
         <button class="btn-modal-close" onclick="closeModal('backupModal')">✕</button>
       </div>
       <div class="modal-body">
         <button class="modal-btn" onclick="exportData()">
-          📤 기록 백업 파일 저장 (.json)
+          📤 전체 기록 백업 파일 저장 (.json)
         </button>
         <button class="modal-btn" onclick="document.getElementById('fileInput').click()">
           📥 백업 파일 불러오기
         </button>
         <input type="file" id="fileInput" accept=".json" style="display:none;" onchange="importData(event)">
-        <button class="modal-btn danger" onclick="resetToday()">
-          ⚠️ 오늘 운동 전체 초기화
+        <button class="modal-btn danger" onclick="resetCurrentSession()">
+          🔄 오늘 작성 중인 운동 비우기
         </button>
       </div>
     </div>
   </div>
 
   <script>
-    // 기본 데이터 템플릿
+    // 기본 데이터 구조
     const defaultData = {
       startTime: Date.now(),
       userWeight: 75,
@@ -566,18 +694,32 @@
             { id: 's-5', weight: 20, reps: 10, completed: false }
           ]
         }
-      ]
+      ],
+      history: []
     };
 
     let state = loadState();
+    let currentTab = 'today';
     let timerTarget = null;
     let timerInterval = null;
 
-    // 로컬 저장소 즉시 영구화 로직
+    // 로컬 스토리지 불러오기 및 저장
     function loadState() {
       try {
-        const saved = localStorage.getItem('FITLOG_PRO_STATE');
-        return saved ? JSON.parse(saved) : defaultData;
+        const saved = localStorage.getItem('FITLOG_PRO_STATE_V2');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (!parsed.history) parsed.history = [];
+          return parsed;
+        }
+        // 이전 버전 데이터 호환
+        const legacy = localStorage.getItem('FITLOG_PRO_STATE');
+        if (legacy) {
+          const legParsed = JSON.parse(legacy);
+          legParsed.history = [];
+          return legParsed;
+        }
+        return defaultData;
       } catch (e) {
         return defaultData;
       }
@@ -585,18 +727,41 @@
 
     function saveState() {
       try {
-        localStorage.setItem('FITLOG_PRO_STATE', JSON.stringify(state));
+        localStorage.setItem('FITLOG_PRO_STATE_V2', JSON.stringify(state));
         const now = new Date();
         const timeStr = now.toTimeString().split(' ')[0];
         document.getElementById('saveStatus').innerText = `${timeStr} 저장됨`;
       } catch (e) {}
     }
 
-    // 사파리 백그라운드 킬 방어 (탭 나가거나 화면 끌 때 즉각 플러시)
+    // 사파리 백그라운드 킬 방어
     window.addEventListener('visibilitychange', () => { if (document.hidden) saveState(); });
     window.addEventListener('pagehide', () => saveState());
 
-    // 대시보드 통계 업데이트 (DOM 전체 재렌더링 없이 부분 갱신)
+    // 탭 전환
+    function switchTab(tab) {
+      currentTab = tab;
+      const tabToday = document.getElementById('tabTodayBtn');
+      const tabHist = document.getElementById('tabHistoryBtn');
+      const secToday = document.getElementById('sectionToday');
+      const secHist = document.getElementById('sectionHistory');
+
+      if (tab === 'today') {
+        tabToday.classList.add('active');
+        tabHist.classList.remove('active');
+        secToday.style.display = 'block';
+        secHist.style.display = 'none';
+        renderToday();
+      } else {
+        tabHist.classList.add('active');
+        tabToday.classList.remove('active');
+        secToday.style.display = 'none';
+        secHist.style.display = 'block';
+        renderHistory();
+      }
+    }
+
+    // 대시보드 지표 갱신
     function updateMetrics() {
       let totalVol = 0;
       let compSets = 0;
@@ -615,15 +780,25 @@
       document.getElementById('totalVolume').innerHTML = `${totalVol.toLocaleString()} <span style="font-size:11px; font-weight:600;">kg</span>`;
       document.getElementById('completedSets').innerText = `${compSets} / ${totalSets}`;
 
-      // 칼로리 계산
       const minutes = Math.max(1, Math.round((Date.now() - (state.startTime || Date.now())) / 60000));
       const calories = Math.round(((minutes * 5.5 * (state.userWeight || 75)) / 60) + (compSets * 5) + (totalVol * 0.0012));
       document.getElementById('totalCalories').innerHTML = `${calories} <span style="font-size:11px; font-weight:600;">kcal</span>`;
     }
 
-    // 운동 카드 UI 렌더링
-    function render() {
+    // 오늘 운동 화면 렌더링
+    function renderToday() {
       const container = document.getElementById('exerciseList');
+      if (state.exercises.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <span>📝</span>
+            <p>등록된 운동이 없어요.<br>아래 버튼을 눌러 운동을 추가해보세요!</p>
+          </div>
+        `;
+        updateMetrics();
+        return;
+      }
+
       container.innerHTML = state.exercises.map((ex, exIdx) => `
         <div class="exercise-card" data-exid="${ex.id}">
           <div class="ex-header">
@@ -675,7 +850,7 @@
       updateMetrics();
     }
 
-    // 타이핑 시 포커스 해제 없는 0.01초 즉시 저장
+    // 키보드 타이핑 즉각 커밋
     function handleInput(exId, setId, field, val) {
       const ex = state.exercises.find(e => e.id === exId);
       if (!ex) return;
@@ -686,7 +861,7 @@
       updateMetrics();
     }
 
-    // 세트 완료 토글 & 90초 타이머 자동 시작
+    // 세트 완료 토글 & 타이머 자동 시작
     function toggleSet(exId, setId) {
       const ex = state.exercises.find(e => e.id === exId);
       if (!ex) return;
@@ -695,14 +870,13 @@
 
       s.completed = !s.completed;
       saveState();
-      render();
+      renderToday();
 
       if (s.completed) {
         startTimer(90);
       }
     }
 
-    // 세트 추가 / 복제 / 삭제
     function addSet(exId) {
       const ex = state.exercises.find(e => e.id === exId);
       if (!ex) return;
@@ -714,30 +888,154 @@
         completed: false
       });
       saveState();
-      render();
+      renderToday();
     }
 
-    function copyLastSet(exId) {
-      addSet(exId);
-    }
+    function copyLastSet(exId) { addSet(exId); }
 
     function deleteSet(exId, setId) {
       const ex = state.exercises.find(e => e.id === exId);
       if (!ex) return;
       ex.sets = ex.sets.filter(s => s.id !== setId);
       saveState();
-      render();
+      renderToday();
     }
 
     function deleteExercise(exIdx) {
-      if (confirm('이 운동을 삭제할까요?')) {
+      if (confirm('이 운동을 목록에서 삭제할까요?')) {
         state.exercises.splice(exIdx, 1);
         saveState();
-        render();
+        renderToday();
       }
     }
 
-    // 90초 타이머 (백그라운드 복원형)
+    // 오늘 운동 완료 및 히스토리 저장
+    function finishTodayWorkout() {
+      let totalVol = 0;
+      let compSets = 0;
+      const exerciseSummaries = [];
+
+      state.exercises.forEach(ex => {
+        const completedSets = ex.sets.filter(s => s.completed);
+        if (completedSets.length > 0) {
+          const setsSummary = completedSets.map(s => `${s.weight}kg×${s.reps}회`).join(', ');
+          exerciseSummaries.push({
+            name: ex.name,
+            category: ex.category,
+            setsSummary: setsSummary
+          });
+        }
+        ex.sets.forEach(s => {
+          if (s.completed) {
+            compSets++;
+            totalVol += (Number(s.weight) || 0) * (Number(s.reps) || 0);
+          }
+        });
+      });
+
+      if (compSets === 0) {
+        return alert('완료(✓) 체크된 세트가 없습니다. 세트를 완료한 뒤 저장해주세요!');
+      }
+
+      const now = new Date();
+      const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')} (${['일','월','화','수','목','금','토'][now.getDay()]}) ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+      const minutes = Math.max(1, Math.round((Date.now() - (state.startTime || Date.now())) / 60000));
+      const calories = Math.round(((minutes * 5.5 * (state.userWeight || 75)) / 60) + (compSets * 5) + (totalVol * 0.0012));
+
+      // 새 기록 생성
+      const newRecord = {
+        id: 'hist-' + Date.now(),
+        dateText: dateStr,
+        totalVolume: totalVol,
+        completedSets: compSets,
+        calories: calories,
+        durationMin: minutes,
+        exercises: JSON.parse(JSON.stringify(state.exercises)), // 당시 전체 루틴 복사
+        exerciseSummaries: exerciseSummaries
+      };
+
+      if (!state.history) state.history = [];
+      state.history.unshift(newRecord); // 최신순 맨 앞 추가
+
+      // 다음 운동을 위해 완료 체크만 해제하고 시간 리셋
+      state.startTime = Date.now();
+      state.exercises.forEach(ex => {
+        ex.sets.forEach(s => s.completed = false);
+      });
+
+      saveState();
+      alert(`🎉 오늘 운동 기록이 성공적으로 저장되었습니다!\n총 볼륨: ${totalVol.toLocaleString()}kg | 완료: ${compSets}세트`);
+      switchTab('history');
+    }
+
+    // 기록(히스토리) 렌더링
+    function renderHistory() {
+      const container = document.getElementById('historyList');
+      if (!state.history || state.history.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <span>🏆</span>
+            <p>아직 저장된 운동 기록이 없어요.<br>'오늘 운동'을 마치고 완료 버튼을 눌러보세요!</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = state.history.map((h, idx) => `
+        <div class="history-card">
+          <div class="history-head">
+            <div>
+              <div class="history-date">${h.dateText}</div>
+              <div class="history-summary">
+                볼륨 ${h.totalVolume.toLocaleString()}kg • ${h.completedSets}세트 완료 • ${h.calories}kcal (${h.durationMin}분)
+              </div>
+            </div>
+          </div>
+
+          <div class="history-detail">
+            ${h.exerciseSummaries.map(es => `
+              <div>• <strong>${es.name}</strong> (${es.category}): <span style="color:#94a3b8;">${es.setsSummary}</span></div>
+            `).join('')}
+          </div>
+
+          <div class="history-actions">
+            <button class="btn-history-load" onclick="loadRoutineFromHistory(${idx})">
+              📋 이 루틴으로 운동 시작하기
+            </button>
+            <button class="btn-history-del" onclick="deleteHistoryItem(${idx})">
+              삭제
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // 지난 루틴 오늘 일지로 불러오기
+    function loadRoutineFromHistory(idx) {
+      if (confirm('이 기록의 운동 종목과 세트 구성을 오늘 운동으로 불러올까요?\n(현재 작성 중인 목록이 교체됩니다)')) {
+        const histItem = state.history[idx];
+        // 체크 상태만 false로 풀어서 복원
+        const clonedExercises = JSON.parse(JSON.stringify(histItem.exercises));
+        clonedExercises.forEach(ex => {
+          ex.sets.forEach(s => s.completed = false);
+        });
+
+        state.exercises = clonedExercises;
+        state.startTime = Date.now();
+        saveState();
+        switchTab('today');
+      }
+    }
+
+    function deleteHistoryItem(idx) {
+      if (confirm('이 운동 기록을 삭제할까요?')) {
+        state.history.splice(idx, 1);
+        saveState();
+        renderHistory();
+      }
+    }
+
+    // 90초 타이머 로직
     function startTimer(seconds) {
       timerTarget = Date.now() + (seconds * 1000);
       localStorage.setItem('FITLOG_TIMER_TARGET', timerTarget);
@@ -775,7 +1073,6 @@
       document.getElementById('timerBanner').style.display = 'none';
     }
 
-    // 비프음 재생 (외부 파일 없이 브라우저 내장 Web Audio API)
     function beep() {
       try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -798,7 +1095,7 @@
     function addExerciseSubmit() {
       const name = document.getElementById('newExName').value.trim();
       const cat = document.getElementById('newExCat').value;
-      if (!name) return alert('운동 이름을 적어주세요');
+      if (!name) return alert('운동 이름을 입력해주세요.');
 
       state.exercises.push({
         id: 'ex-' + Date.now(),
@@ -813,10 +1110,10 @@
       document.getElementById('newExName').value = '';
       closeModal('addModal');
       saveState();
-      render();
+      renderToday();
     }
 
-    // 백업 및 복원
+    // 전체 데이터 백업 / 복구
     function exportData() {
       const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
@@ -834,10 +1131,11 @@
       reader.onload = (evt) => {
         try {
           state = JSON.parse(evt.target.result);
+          if (!state.history) state.history = [];
           saveState();
-          render();
+          renderToday();
           closeModal('backupModal');
-          alert('기록이 정상적으로 복원되었습니다!');
+          alert('기록이 성공적으로 복원되었습니다!');
         } catch (err) {
           alert('올바른 백업 파일이 아닙니다.');
         }
@@ -845,19 +1143,19 @@
       reader.readAsText(file);
     }
 
-    function resetToday() {
-      if (confirm('오늘 운동 기록을 모두 초기화할까요?')) {
+    function resetCurrentSession() {
+      if (confirm('현재 작성 중인 오늘 운동 기록을 모두 비울까요?\n(지난 히스토리 기록은 유지됩니다)')) {
         state.startTime = Date.now();
         state.exercises.forEach(ex => {
           ex.sets.forEach(s => s.completed = false);
         });
         saveState();
-        render();
+        renderToday();
         closeModal('backupModal');
       }
     }
 
-    // 타이머 복원 검사
+    // 저장되어 있던 타이머 복원
     const savedTimer = localStorage.getItem('FITLOG_TIMER_TARGET');
     if (savedTimer && Number(savedTimer) > Date.now()) {
       timerTarget = Number(savedTimer);
@@ -866,8 +1164,8 @@
       timerInterval = setInterval(updateTimerUI, 1000);
     }
 
-    // 최초 렌더링
-    render();
+    // 첫 실행
+    renderToday();
   </script>
 </body>
 </html>
