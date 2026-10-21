@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>FITLOG MACHINE</title>
 
-  <!-- PWA & 모바일 웹앱 전체화면 설정 -->
+  <!-- PWA & 모바일 전체화면 설정 -->
   <link rel="manifest" href="./manifest.json">
   <meta name="theme-color" content="#0f1115">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -67,27 +67,32 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 1.15rem;
+      gap: 6px;
+      font-size: 1.1rem;
       font-weight: 800;
       letter-spacing: -0.5px;
     }
 
     .brand span {
       color: var(--accent-blue);
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       background: rgba(59, 130, 246, 0.15);
       padding: 2px 6px;
       border-radius: 4px;
-      margin-left: 2px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .timer-wrap {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       background: var(--bg-card-sub);
-      padding: 5px 12px;
+      padding: 4px 10px;
       border-radius: 20px;
       border: 1px solid var(--border-color);
     }
@@ -95,19 +100,19 @@
     .timer-display {
       font-variant-numeric: tabular-nums;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: var(--accent-amber);
     }
 
-    .timer-btn {
+    .icon-btn {
       background: none;
       border: none;
       color: var(--text-muted);
       cursor: pointer;
-      font-size: 0.8rem;
-      padding: 2px 4px;
+      font-size: 0.95rem;
+      padding: 4px;
     }
-    .timer-btn:active { color: #fff; }
+    .icon-btn:active { color: #fff; }
 
     /* DASHBOARD */
     .dashboard {
@@ -121,33 +126,33 @@
       background-color: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: 14px;
-      padding: 14px 10px;
+      padding: 14px 8px;
       text-align: center;
     }
 
     .stat-label {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--text-muted);
       margin-bottom: 4px;
     }
 
     .stat-val {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-weight: 800;
       letter-spacing: -0.5px;
     }
 
     .stat-val small {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 500;
       color: var(--text-muted);
       margin-left: 2px;
     }
 
-    /* SECTION CONTAINER */
+    /* SECTION */
     .container {
       padding: 0 16px;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
     }
 
     .section-title {
@@ -165,14 +170,14 @@
       font-weight: 400;
     }
 
-    /* WORKOUT LIST CARDS */
+    /* EXERCISE CARDS */
     .exercise-card {
       background-color: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: 16px;
       padding: 16px;
       margin-bottom: 14px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
 
     .ex-header {
@@ -203,24 +208,24 @@
     }
 
     .ex-name {
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 700;
     }
 
-    .ex-delete-btn {
+    .ex-del-btn {
       background: none;
       border: none;
       color: #64748b;
-      font-size: 1.1rem;
+      font-size: 1rem;
       cursor: pointer;
       padding: 4px;
     }
-    .ex-delete-btn:active { color: var(--accent-red); }
+    .ex-del-btn:active { color: var(--accent-red); }
 
-    /* SET ROWS */
+    /* SET ROW */
     .set-row {
       display: grid;
-      grid-template-columns: 36px 1fr 1fr 44px 30px;
+      grid-template-columns: 32px 1fr 1fr 42px 28px;
       gap: 8px;
       align-items: center;
       padding: 6px 0;
@@ -262,7 +267,7 @@
 
     .set-check-btn {
       height: 34px;
-      width: 38px;
+      width: 40px;
       border-radius: 8px;
       border: 1px solid var(--border-color);
       background: var(--bg-card-sub);
@@ -272,7 +277,6 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: all 0.15s;
     }
 
     .set-check-btn.done {
@@ -285,7 +289,7 @@
       background: none;
       border: none;
       color: #475569;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       cursor: pointer;
       text-align: center;
     }
@@ -306,54 +310,95 @@
     .add-set-btn:active { background: #282e3b; color: #fff; }
 
     /* ACTION BUTTONS */
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
     .btn-main-add {
-      width: 100%;
-      padding: 14px;
-      border-radius: 14px;
+      flex: 1;
+      padding: 13px;
+      border-radius: 12px;
       background: linear-gradient(135deg, #2563eb, #1d4ed8);
       color: #fff;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 700;
       border: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
       cursor: pointer;
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
     }
-    .btn-main-add:active { transform: scale(0.98); }
 
-    /* GEMINI COACH CARD */
+    .btn-finish-workout {
+      flex: 1;
+      padding: 13px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #059669, #10b981);
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-finish-workout:active, .btn-main-add:active { transform: scale(0.98); }
+
+    /* HISTORY LOG SECTION */
+    .history-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 10px;
+    }
+
+    .hist-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .hist-date {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #f1f5f9;
+    }
+
+    .hist-summary {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .hist-details {
+      display: none;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.8rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+    }
+
+    .hist-del-btn {
+      background: none;
+      border: none;
+      color: #64748b;
+      font-size: 0.85rem;
+      padding: 4px 6px;
+      cursor: pointer;
+    }
+    .hist-del-btn:active { color: var(--accent-red); }
+
+    /* GEMINI CARD */
     .gemini-card {
       background: linear-gradient(145deg, #181d29, #131722);
       border: 1px solid #2e3a52;
       border-radius: 16px;
       padding: 16px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .gemini-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .gemini-icon {
-      font-size: 1.4rem;
-      background: rgba(59, 130, 246, 0.2);
-      width: 36px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 10px;
     }
 
     .prompt-box {
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.35);
       border: 1px solid var(--border-color);
       border-radius: 10px;
       padding: 12px;
@@ -361,10 +406,9 @@
       color: #cbd5e1;
       line-height: 1.5;
       white-space: pre-wrap;
-      max-height: 130px;
+      max-height: 120px;
       overflow-y: auto;
-      margin-bottom: 12px;
-      font-family: inherit;
+      margin: 10px 0;
     }
 
     .gemini-actions {
@@ -383,7 +427,6 @@
       font-size: 0.85rem;
       cursor: pointer;
     }
-    .btn-copy:active { background: #2f3747; }
 
     .btn-gemini-link {
       flex: 1;
@@ -394,13 +437,13 @@
       text-decoration: none;
       font-weight: 700;
       font-size: 0.85rem;
+      text-align: center;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
     }
 
-    /* REST TIMER OVERLAY */
+    /* REST TIMER BAR */
     .rest-bar {
       position: fixed;
       bottom: 20px;
@@ -409,36 +452,22 @@
       background: rgba(24, 27, 34, 0.95);
       border: 1px solid #3b82f6;
       border-radius: 18px;
-      padding: 14px 18px;
+      padding: 12px 16px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.6);
       backdrop-filter: blur(10px);
       z-index: 100;
       display: none;
-      animation: slideUp 0.25s ease-out;
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(60px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
     }
 
     .rest-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .rest-title {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      margin-bottom: 8px;
     }
 
     .rest-time {
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       font-weight: 800;
       color: var(--accent-blue);
       font-variant-numeric: tabular-nums;
@@ -466,7 +495,7 @@
       border-color: var(--accent-blue);
     }
 
-    /* MODAL */
+    /* MODAL BASE */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -480,19 +509,13 @@
     .modal-window {
       width: 100%;
       background: var(--bg-card);
-      border-top-left-radius: 24px;
-      border-top-right-radius: 24px;
+      border-top-left-radius: 22px;
+      border-top-right-radius: 22px;
       border-top: 1px solid var(--border-color);
       max-height: 85vh;
       display: flex;
       flex-direction: column;
       padding-bottom: env(safe-area-inset-bottom);
-      animation: modalSlide 0.2s ease-out;
-    }
-
-    @keyframes modalSlide {
-      from { transform: translateY(100%); }
-      to { transform: translateY(0); }
     }
 
     .modal-header {
@@ -511,7 +534,7 @@
       cursor: pointer;
     }
 
-    /* CATEGORY TABS */
+    /* TABS & CUSTOM MACHINE */
     .cat-tabs {
       display: flex;
       gap: 6px;
@@ -538,18 +561,10 @@
       border-color: var(--accent-blue);
     }
 
-    /* CUSTOM MACHINE ADD BOX */
     .custom-machine-container {
       padding: 10px 18px 4px;
       background: rgba(255, 255, 255, 0.02);
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .custom-machine-title {
-      font-size: 0.75rem;
-      color: var(--accent-amber);
-      font-weight: 600;
-      margin-bottom: 6px;
     }
 
     .custom-machine-form {
@@ -589,13 +604,8 @@
       cursor: pointer;
       white-space: nowrap;
     }
-    .custom-add-btn:active { opacity: 0.85; }
 
-    /* SEARCH BAR */
-    .search-box {
-      padding: 10px 18px;
-    }
-
+    .search-box { padding: 10px 18px; }
     .search-input {
       width: 100%;
       padding: 10px 14px;
@@ -607,7 +617,6 @@
       outline: none;
     }
 
-    /* EXERCISE SELECT LIST */
     .modal-list {
       flex: 1;
       overflow-y: auto;
@@ -618,27 +627,44 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 13px 12px;
+      padding: 13px 10px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       cursor: pointer;
     }
     .select-item:active { background: rgba(255,255,255,0.04); border-radius: 8px; }
 
-    .select-item-left {
+    /* BACKUP MODAL STYLES */
+    .backup-body {
+      padding: 18px 20px 24px;
       display: flex;
-      align-items: center;
-      gap: 8px;
+      flex-direction: column;
+      gap: 12px;
     }
 
-    .del-custom-machine-btn {
-      background: none;
-      border: none;
-      color: #64748b;
-      font-size: 0.85rem;
-      padding: 4px;
-      cursor: pointer;
+    .backup-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 6px;
     }
-    .del-custom-machine-btn:active { color: var(--accent-red); }
+
+    .btn-backup-action {
+      width: 100%;
+      padding: 13px;
+      border-radius: 12px;
+      background: var(--bg-card-sub);
+      border: 1px solid var(--border-color);
+      color: #f1f5f9;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-backup-action:active { background: #2f3747; }
 
     /* TOAST */
     .toast {
@@ -653,15 +679,11 @@
       border-radius: 25px;
       font-size: 0.85rem;
       font-weight: 600;
-      backdrop-filter: blur(8px);
       box-shadow: 0 6px 20px rgba(0,0,0,0.5);
       z-index: 300;
       opacity: 0;
       transition: all 0.25s ease;
       pointer-events: none;
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
     .toast.show {
       transform: translateX(-50%) translateY(0);
@@ -677,10 +699,13 @@
       ⚡ FITLOG <span>MACHINE</span>
     </div>
 
-    <div class="timer-wrap">
-      <span class="timer-display" id="workoutTimer">00:00</span>
-      <button class="timer-btn" id="timerToggleBtn" title="시작/일시정지">▶</button>
-      <button class="timer-btn" id="timerResetBtn" title="초기화">↺</button>
+    <div class="header-right">
+      <div class="timer-wrap">
+        <span class="timer-display" id="workoutTimer">00:00</span>
+        <button class="icon-btn" id="timerToggleBtn" title="시작/정지">▶</button>
+        <button class="icon-btn" id="timerResetBtn" title="초기화">↺</button>
+      </div>
+      <button class="icon-btn" id="openBackupModalBtn" title="데이터 백업 및 복원" style="font-size: 1.15rem; margin-left: 2px;">💾</button>
     </div>
   </header>
 
@@ -700,7 +725,7 @@
     </div>
   </div>
 
-  <!-- WORKOUT SECTION -->
+  <!-- TODAY'S ROUTINE -->
   <div class="container">
     <div class="section-title">
       <span>오늘의 머신 루틴</span>
@@ -708,22 +733,23 @@
     </div>
 
     <div id="exerciseContainer">
-      <!-- 동적 생성 머신 카드 -->
+      <!-- 운동 목록 동적 렌더링 -->
     </div>
 
-    <button class="btn-main-add" id="openSelectModalBtn">
-      <span>+</span> 머신 운동 추가하기
-    </button>
+    <div class="btn-group">
+      <button class="btn-main-add" id="openSelectModalBtn">+ 머신 추가</button>
+      <button class="btn-finish-workout" id="finishWorkoutBtn">✓ 운동 완료 & 일지 저장</button>
+    </div>
   </div>
 
   <!-- GEMINI AI COACH -->
   <div class="container">
     <div class="gemini-card">
-      <div class="gemini-header">
-        <div class="gemini-icon">🤖</div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 1.3rem;">🤖</span>
         <div>
           <div style="font-weight: 700; font-size: 0.95rem;">Gemini AI 피트니스 코치</div>
-          <div style="font-size: 0.75rem; color: var(--text-muted);">오늘 수행한 머신 볼륨을 분석해 다음 증량 목표를 정해줍니다.</div>
+          <div style="font-size: 0.72rem; color: var(--text-muted);">수행한 머신 볼륨을 분석해 다음 증량 목표를 정해줍니다.</div>
         </div>
       </div>
 
@@ -736,14 +762,23 @@
     </div>
   </div>
 
+  <!-- CUMULATIVE WORKOUT HISTORY -->
+  <div class="container">
+    <div class="section-title">
+      <span>누적 운동 일지</span>
+      <span class="section-sub">기록이 브라우저에 자동 저장됩니다</span>
+    </div>
+    <div id="historyContainer">
+      <!-- 누적 일지 동적 렌더링 -->
+    </div>
+  </div>
+
   <!-- REST TIMER POPUP -->
   <div class="rest-bar" id="restTimerBar">
     <div class="rest-top">
-      <div class="rest-title">
-        <span>⏳</span> <span>세트 휴식 중</span>
-      </div>
+      <div style="font-size: 0.85rem; color: var(--text-muted);">⏳ 세트 휴식 중</div>
       <div class="rest-time" id="restCounter">60s</div>
-      <button class="timer-btn" id="closeRestBtn" style="font-size: 1.1rem;">✕</button>
+      <button class="icon-btn" id="closeRestBtn" style="font-size: 1.1rem;">✕</button>
     </div>
     <div class="rest-presets">
       <button class="preset-btn" data-time="30">30초</button>
@@ -753,7 +788,7 @@
     </div>
   </div>
 
-  <!-- EXERCISE SELECT MODAL -->
+  <!-- EXERCISE SELECT MODAL (기타 머신 추가 포함) -->
   <div class="modal-backdrop" id="exerciseModal">
     <div class="modal-window">
       <div class="modal-header">
@@ -762,7 +797,7 @@
       </div>
 
       <!-- 카테고리 탭 (기타 포함) -->
-      <div class="cat-tabs" id="catTabs">
+      <div class="cat-tabs">
         <button class="cat-tab active" data-cat="전체">전체</button>
         <button class="cat-tab" data-cat="가슴">가슴</button>
         <button class="cat-tab" data-cat="등">등</button>
@@ -772,11 +807,13 @@
         <button class="cat-tab" data-cat="기타">기타</button>
       </div>
 
-      <!-- 신규 머신 직접 추가 박스 -->
+      <!-- 커스텀 머신 직접 추가 박스 -->
       <div class="custom-machine-container">
-        <div class="custom-machine-title">✨ 원하는 머신 직접 추가하기</div>
+        <div style="font-size: 0.75rem; color: var(--accent-amber); font-weight: 600; margin-bottom: 6px;">
+          ✨ 원하는 머신 직접 추가하기
+        </div>
         <div class="custom-machine-form">
-          <input type="text" id="customMachineInput" class="custom-input" placeholder="머신 이름 (예: 힙 트러스트 머신, 복근 머신)">
+          <input type="text" id="customMachineInput" class="custom-input" placeholder="머신 이름 (예: 힙 어브덕션, 복근 머신)">
           <select id="customMachineCategory" class="custom-cat-select">
             <option value="기타">기타</option>
             <option value="가슴">가슴</option>
@@ -789,26 +826,58 @@
         </div>
       </div>
 
-      <!-- 검색창 -->
+      <!-- 검색 -->
       <div class="search-box">
-        <input type="text" id="searchMachineInput" class="search-input" placeholder="🔍 머신 이름 검색...">
+        <input type="text" id="searchMachineInput" class="search-input" placeholder="🔍 머신 검색...">
       </div>
 
-      <!-- 머신 목록 -->
-      <div class="modal-list" id="modalMachineList">
-        <!-- 동적 렌더링 -->
+      <!-- 리스트 -->
+      <div class="modal-list" id="modalMachineList"></div>
+    </div>
+  </div>
+
+  <!-- BACKUP & RESTORE MODAL -->
+  <div class="modal-backdrop" id="backupModal">
+    <div class="modal-window">
+      <div class="modal-header">
+        <div style="font-weight: 700; font-size: 1.05rem;">💾 데이터 백업 및 설정</div>
+        <button class="modal-close" id="closeBackupModalBtn">✕</button>
+      </div>
+      <div class="backup-body">
+        <p class="backup-desc">
+          브라우저 캐시 삭제 시 운동 일지가 지워지는 것을 방지하기 위해 파일이나 텍스트로 안전하게 보관할 수 있습니다.
+        </p>
+
+        <!-- JSON 백업 다운로드 -->
+        <button class="btn-backup-action" id="exportJsonBtn">
+          📥 운동 일지 JSON 파일로 백업
+        </button>
+
+        <!-- JSON 파일 복원 -->
+        <label class="btn-backup-action" style="cursor: pointer;">
+          📂 백업 파일 선택하여 복원
+          <input type="file" id="importJsonInput" accept=".json" style="display: none;">
+        </label>
+
+        <!-- 텍스트로 클립보드 복사 백업 -->
+        <button class="btn-backup-action" id="copyTextBackupBtn">
+          📋 전체 기록 텍스트 복사 백업
+        </button>
+
+        <!-- 전체 데이터 초기화 -->
+        <button class="btn-backup-action" id="resetAllDataBtn" style="color: var(--accent-red); border-color: rgba(239,68,68,0.3); margin-top: 10px;">
+          ⚠️ 전체 데이터 초기화
+        </button>
       </div>
     </div>
   </div>
 
   <!-- TOAST -->
-  <div class="toast" id="toastBox">
-    <span>✅</span> <span id="toastMsg">클립보드에 복사되었습니다!</span>
-  </div>
+  <div class="toast" id="toastBox">알림</div>
 
   <script>
     /* ==========================================================
-       1. DATA DEFINITIONS & LOCAL STORAGE
+       1. DATA MANAGEMENT & STORAGE
     ========================================================== */
     const DEFAULT_MACHINES = [
       { id: 'm_chest_1', name: '체스트 프레스 머신', category: '가슴' },
@@ -831,6 +900,7 @@
 
     let customMachines = JSON.parse(localStorage.getItem('fitlog_custom_machines')) || [];
     let todayWorkouts = JSON.parse(localStorage.getItem('fitlog_today_workouts')) || [];
+    let workoutHistory = JSON.parse(localStorage.getItem('fitlog_workout_history')) || [];
 
     function saveTodayWorkouts() {
       localStorage.setItem('fitlog_today_workouts', JSON.stringify(todayWorkouts));
@@ -842,8 +912,13 @@
       localStorage.setItem('fitlog_custom_machines', JSON.stringify(customMachines));
     }
 
+    function saveWorkoutHistory() {
+      localStorage.setItem('fitlog_workout_history', JSON.stringify(workoutHistory));
+      renderHistory();
+    }
+
     /* ==========================================================
-       2. WORKOUT STOPWATCH (경과 시간 타이머)
+       2. WORKOUT STOPWATCH
     ========================================================== */
     let elapsedSeconds = parseInt(localStorage.getItem('fitlog_timer_sec') || '0', 10);
     let timerInterval = null;
@@ -890,7 +965,7 @@
     updateTimerUI();
 
     /* ==========================================================
-       3. REST TIMER (세트 간 휴식 카운트다운)
+       3. REST TIMER
     ========================================================== */
     let restTimeSetting = 60;
     let restRemaining = 60;
@@ -934,7 +1009,7 @@
     });
 
     /* ==========================================================
-       4. DASHBOARD & GEMINI PROMPT CALCULATION
+       4. DASHBOARD & GEMINI PROMPT
     ========================================================== */
     function renderDashboard() {
       let totalVol = 0;
@@ -954,7 +1029,6 @@
       document.getElementById('totalVolume').textContent = totalVol.toLocaleString();
       document.getElementById('completedSets').textContent = completedSetsCount;
       document.getElementById('totalSets').textContent = totalSetsCount;
-      // 칼로리 추정치: 볼륨과 세트 기반 간이 계산
       const kcal = Math.round(totalVol * 0.025 + completedSetsCount * 5.5);
       document.getElementById('burnedKcal').textContent = kcal;
     }
@@ -1006,7 +1080,7 @@ ${detailLines.join('\n\n')}
     }
 
     /* ==========================================================
-       5. WORKOUT ROUTINE CARDS RENDERING
+       5. WORKOUT ROUTINE ACTIONS
     ========================================================== */
     const exerciseContainer = document.getElementById('exerciseContainer');
 
@@ -1014,8 +1088,8 @@ ${detailLines.join('\n\n')}
       exerciseContainer.innerHTML = '';
       if (todayWorkouts.length === 0) {
         exerciseContainer.innerHTML = `
-          <div style="text-align:center; padding: 30px 10px; color: var(--text-muted); font-size: 0.85rem; background: var(--bg-card); border-radius: 14px; border: 1px dashed var(--border-color); margin-bottom: 14px;">
-            등록된 운동이 없습니다.<br>아래 <b>+ 머신 운동 추가하기</b> 버튼을 눌러 운동을 시작하세요!
+          <div style="text-align:center; padding: 26px 10px; color: var(--text-muted); font-size: 0.85rem; background: var(--bg-card); border-radius: 14px; border: 1px dashed var(--border-color); margin-bottom: 14px;">
+            등록된 운동이 없습니다.<br>아래 <b>+ 머신 추가</b> 버튼을 눌러 운동을 시작하세요!
           </div>
         `;
         renderDashboard();
@@ -1051,11 +1125,9 @@ ${detailLines.join('\n\n')}
               <span class="ex-badge ${ex.category}">${ex.category}</span>
               <span class="ex-name">${ex.name}</span>
             </div>
-            <button class="ex-delete-btn" onclick="removeExercise(${exIdx})" title="운동 삭제">✕</button>
+            <button class="ex-del-btn" onclick="removeExercise(${exIdx})" title="운동 삭제">✕</button>
           </div>
-          <div class="sets-box">
-            ${setsHtml}
-          </div>
+          <div class="sets-box">${setsHtml}</div>
           <button class="add-set-btn" onclick="addSet(${exIdx})">+ 세트 추가</button>
         `;
         exerciseContainer.appendChild(card);
@@ -1075,20 +1147,13 @@ ${detailLines.join('\n\n')}
       todayWorkouts[exIdx].sets[setIdx].done = !current;
       saveTodayWorkouts();
       renderWorkouts();
-
-      if (!current) {
-        startRestTimer();
-      }
+      if (!current) startRestTimer();
     };
 
     window.addSet = (exIdx) => {
       const sets = todayWorkouts[exIdx].sets;
-      const lastSet = sets[sets.length - 1] || { weight: 40, reps: 10 };
-      sets.push({
-        weight: lastSet.weight,
-        reps: lastSet.reps,
-        done: false
-      });
+      const last = sets[sets.length - 1] || { weight: 40, reps: 10 };
+      sets.push({ weight: last.weight, reps: last.reps, done: false });
       saveTodayWorkouts();
       renderWorkouts();
     };
@@ -1108,7 +1173,225 @@ ${detailLines.join('\n\n')}
     };
 
     /* ==========================================================
-       6. EXERCISE SELECTION MODAL & CUSTOM MACHINES
+       6. FINISH WORKOUT & HISTORICAL LOGS
+    ========================================================== */
+    const finishWorkoutBtn = document.getElementById('finishWorkoutBtn');
+    const historyContainer = document.getElementById('historyContainer');
+
+    finishWorkoutBtn.addEventListener('click', () => {
+      if (todayWorkouts.length === 0) {
+        showToast('⚠️ 기록할 운동이 없습니다!');
+        return;
+      }
+
+      let totalVol = 0;
+      let completedCount = 0;
+      todayWorkouts.forEach(ex => {
+        ex.sets.forEach(s => {
+          if (s.done) {
+            completedCount++;
+            totalVol += (s.weight * s.reps);
+          }
+        });
+      });
+
+      if (completedCount === 0) {
+        if (!confirm('완료(✓) 체크된 세트가 없습니다. 그래도 오늘 일지로 저장할까요?')) return;
+      }
+
+      const now = new Date();
+      const dateKey = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
+      const timeKey = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+      const historyItem = {
+        id: 'hist_' + Date.now(),
+        date: dateKey,
+        time: timeKey,
+        totalVolume: totalVol,
+        completedSets: completedCount,
+        duration: formatTime(elapsedSeconds),
+        exercises: JSON.parse(JSON.stringify(todayWorkouts))
+      };
+
+      workoutHistory.unshift(historyItem);
+      saveWorkoutHistory();
+
+      if (confirm('🎉 오늘 운동이 일지에 저장되었습니다!\n오늘 루틴을 초기화할까요?')) {
+        todayWorkouts = [];
+        saveTodayWorkouts();
+        renderWorkouts();
+        elapsedSeconds = 0;
+        updateTimerUI();
+      }
+
+      showToast('💾 누적 운동 일지에 저장 완료!');
+    });
+
+    function renderHistory() {
+      historyContainer.innerHTML = '';
+      if (workoutHistory.length === 0) {
+        historyContainer.innerHTML = `
+          <div style="text-align: center; padding: 24px; color: var(--text-muted); font-size: 0.85rem; background: var(--bg-card); border-radius: 14px; border: 1px dashed var(--border-color);">
+            아직 누적된 일지가 없습니다.<br>운동 완료 후 <b>[운동 완료 & 일지 저장]</b>을 눌러보세요!
+          </div>
+        `;
+        return;
+      }
+
+      workoutHistory.forEach((hist, hIdx) => {
+        const card = document.createElement('div');
+        card.className = 'history-card';
+
+        const exNames = hist.exercises.map(e => e.name).join(', ');
+        let detailsHtml = hist.exercises.map(e => {
+          const sLines = e.sets.map((s, si) => `${si+1}세트: ${s.weight}kg × ${s.reps}회 ${s.done ? '✓' : '(미완료)'}`).join('<br>');
+          return `<strong>• ${e.name} (${e.category})</strong><br>${sLines}`;
+        }).join('<br><br>');
+
+        card.innerHTML = `
+          <div class="hist-top" onclick="toggleHistDetails(${hIdx})">
+            <div>
+              <div class="hist-date">📅 ${hist.date} <span style="font-size:0.75rem; color:var(--text-muted); font-weight:normal;">(${hist.time})</span></div>
+              <div class="hist-summary">총 볼륨: <b>${hist.totalVolume.toLocaleString()}kg</b> | 완료: <b>${hist.completedSets}세트</b> | 시간: ${hist.duration || '00:00'}</div>
+              <div style="font-size:0.75rem; color:#60a5fa; margin-top:3px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width: 270px;">${exNames}</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span id="histArrow_${hIdx}" style="font-size:0.8rem; color:var(--text-muted);">▼</span>
+              <button class="hist-del-btn" onclick="deleteHistoryItem(${hIdx}, event)" title="일지 삭제">🗑️</button>
+            </div>
+          </div>
+          <div class="hist-details" id="histDetails_${hIdx}">
+            ${detailsHtml}
+          </div>
+        `;
+        historyContainer.appendChild(card);
+      });
+    }
+
+    window.toggleHistDetails = (hIdx) => {
+      const det = document.getElementById(`histDetails_${hIdx}`);
+      const arrow = document.getElementById(`histArrow_${hIdx}`);
+      if (det.style.display === 'block') {
+        det.style.display = 'none';
+        arrow.textContent = '▼';
+      } else {
+        det.style.display = 'block';
+        arrow.textContent = '▲';
+      }
+    };
+
+    window.deleteHistoryItem = (hIdx, event) => {
+      event.stopPropagation();
+      if (confirm('이 운동 일지 기록을 삭제하시겠습니까?')) {
+        workoutHistory.splice(hIdx, 1);
+        saveWorkoutHistory();
+        showToast('일지가 삭제되었습니다.');
+      }
+    };
+
+    /* ==========================================================
+       7. BACKUP & RESTORE MODAL (JSON / TEXT)
+    ========================================================== */
+    const backupModal = document.getElementById('backupModal');
+    const openBackupModalBtn = document.getElementById('openBackupModalBtn');
+    const closeBackupModalBtn = document.getElementById('closeBackupModalBtn');
+    const exportJsonBtn = document.getElementById('exportJsonBtn');
+    const importJsonInput = document.getElementById('importJsonInput');
+    const copyTextBackupBtn = document.getElementById('copyTextBackupBtn');
+    const resetAllDataBtn = document.getElementById('resetAllDataBtn');
+
+    openBackupModalBtn.addEventListener('click', () => { backupModal.style.display = 'flex'; });
+    closeBackupModalBtn.addEventListener('click', () => { backupModal.style.display = 'none'; });
+    backupModal.addEventListener('click', (e) => { if (e.target === backupModal) backupModal.style.display = 'none'; });
+
+    // JSON 백업 다운로드
+    exportJsonBtn.addEventListener('click', () => {
+      const backupData = {
+        app: "FITLOG_MACHINE",
+        version: "1.2",
+        exportedAt: new Date().toLocaleString(),
+        data: {
+          workoutHistory: workoutHistory,
+          todayWorkouts: todayWorkouts,
+          customMachines: customMachines
+        }
+      };
+
+      const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const dateTag = new Date().toISOString().slice(0,10).replace(/-/g,'');
+      a.href = url;
+      a.download = `fitlog_backup_${dateTag}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('📥 JSON 백업 파일이 다운로드되었습니다!');
+    });
+
+    // JSON 파일 복원
+    importJsonInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const json = JSON.parse(event.target.result);
+          if (json.data) {
+            workoutHistory = json.data.workoutHistory || json.data.workouts || [];
+            todayWorkouts = json.data.todayWorkouts || [];
+            customMachines = json.data.customMachines || [];
+          } else {
+            // 다른 형식 백업 호환
+            workoutHistory = json.workoutHistory || [];
+            todayWorkouts = json.todayWorkouts || [];
+            customMachines = json.customMachines || [];
+          }
+
+          saveWorkoutHistory();
+          saveTodayWorkouts();
+          saveCustomMachines();
+          renderWorkouts();
+          renderHistory();
+          backupModal.style.display = 'none';
+          showToast('✅ 백업 데이터가 성공적으로 복원되었습니다!');
+        } catch (err) {
+          alert('올바른 Fitlog 백업 JSON 파일이 아닙니다.');
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    // 텍스트 클립보드 복사 백업
+    copyTextBackupBtn.addEventListener('click', () => {
+      const backupText = JSON.stringify({
+        workoutHistory,
+        todayWorkouts,
+        customMachines
+      });
+      navigator.clipboard.writeText(backupText).then(() => {
+        showToast('📋 전체 백업 텍스트가 복사되었습니다!');
+      });
+    });
+
+    // 전체 초기화
+    resetAllDataBtn.addEventListener('click', () => {
+      if (confirm('⚠️ 경고: 모든 오늘 운동, 누적 일지, 커스텀 머신이 영구 삭제됩니다. 계속할까요?')) {
+        localStorage.clear();
+        workoutHistory = [];
+        todayWorkouts = [];
+        customMachines = [];
+        elapsedSeconds = 0;
+        updateTimerUI();
+        renderWorkouts();
+        renderHistory();
+        backupModal.style.display = 'none';
+        showToast('모든 데이터가 초기화되었습니다.');
+      }
+    });
+
+    /* ==========================================================
+       8. EXERCISE SELECTION & CUSTOM MACHINES
     ========================================================== */
     const exerciseModal = document.getElementById('exerciseModal');
     const openSelectModalBtn = document.getElementById('openSelectModalBtn');
@@ -1128,15 +1411,9 @@ ${detailLines.join('\n\n')}
       searchMachineInput.value = '';
     });
 
-    closeModalBtn.addEventListener('click', () => {
-      exerciseModal.style.display = 'none';
-    });
+    closeModalBtn.addEventListener('click', () => { exerciseModal.style.display = 'none'; });
+    exerciseModal.addEventListener('click', (e) => { if (e.target === exerciseModal) exerciseModal.style.display = 'none'; });
 
-    exerciseModal.addEventListener('click', (e) => {
-      if (e.target === exerciseModal) exerciseModal.style.display = 'none';
-    });
-
-    // 카테고리 탭 선택
     document.querySelectorAll('.cat-tab').forEach(tab => {
       tab.addEventListener('click', (e) => {
         document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
@@ -1148,7 +1425,7 @@ ${detailLines.join('\n\n')}
 
     searchMachineInput.addEventListener('input', renderModalMachineList);
 
-    // 커스텀 머신 직접 추가
+    // 커스텀 머신 등록
     addCustomMachineBtn.addEventListener('click', () => {
       const name = customMachineInput.value.trim();
       const cat = customMachineCategory.value;
@@ -1194,8 +1471,8 @@ ${detailLines.join('\n\n')}
       modalMachineList.innerHTML = '';
       if (filtered.length === 0) {
         modalMachineList.innerHTML = `
-          <div style="text-align: center; padding: 30px; color: var(--text-muted); font-size: 0.85rem;">
-            일치하는 머신이 없습니다.<br>상단 입력창에서 바로 새 머신을 등록해보세요!
+          <div style="text-align: center; padding: 26px; color: var(--text-muted); font-size: 0.85rem;">
+            일치하는 머신이 없습니다.<br>위 입력창에서 바로 새 머신을 등록해보세요!
           </div>
         `;
         return;
@@ -1205,17 +1482,15 @@ ${detailLines.join('\n\n')}
         const item = document.createElement('div');
         item.className = 'select-item';
         item.innerHTML = `
-          <div class="select-item-left">
+          <div style="display: flex; align-items: center; gap: 8px;">
             <span class="ex-badge ${m.category}">${m.category}</span>
             <span style="font-weight: 600; font-size: 0.95rem;">${m.name}</span>
           </div>
           <div>
-            ${m.isCustom ? `<button class="del-custom-machine-btn" onclick="deleteCustomMachine('${m.id}', event)" title="삭제">🗑️</button>` : ''}
+            ${m.isCustom ? `<button class="icon-btn" onclick="deleteCustomMachine('${m.id}', event)" title="머신 삭제">🗑️</button>` : ''}
           </div>
         `;
-        item.addEventListener('click', () => {
-          selectAndAddExercise(m);
-        });
+        item.addEventListener('click', () => { selectAndAddExercise(m); });
         modalMachineList.appendChild(item);
       });
     }
@@ -1238,37 +1513,35 @@ ${detailLines.join('\n\n')}
     }
 
     /* ==========================================================
-       7. UTILS & PWA SERVICE WORKER
+       9. UTILS & PWA INIT
     ========================================================== */
     function showToast(msg) {
       const toast = document.getElementById('toastBox');
-      document.getElementById('toastMsg').textContent = msg;
+      toast.textContent = msg;
       toast.classList.add('show');
       setTimeout(() => { toast.classList.remove('show'); }, 2200);
     }
 
-    // 제미나이 프롬프트 복사
     document.getElementById('copyPromptBtn').addEventListener('click', () => {
       const text = document.getElementById('geminiPromptBox').textContent;
       navigator.clipboard.writeText(text).then(() => {
         showToast('📋 Gemini 프롬프트가 복사되었습니다!');
-      }).catch(() => {
-        showToast('⚠️ 복사 권한이 필요합니다.');
       });
     });
 
     // 오늘 날짜 표시
-    const now = new Date();
-    document.getElementById('todayDateStr').textContent = `${now.getFullYear()}.${now.getMonth()+1}.${now.getDate()}`;
+    const today = new Date();
+    document.getElementById('todayDateStr').textContent = `${today.getFullYear()}.${today.getMonth()+1}.${today.getDate()}`;
 
     // 초기 렌더링
     renderWorkouts();
+    renderHistory();
 
     // PWA Service Worker 등록
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js').catch(err => {
-          console.log('SW registration skipped or error:', err);
+          console.log('SW registration error:', err);
         });
       });
     }
