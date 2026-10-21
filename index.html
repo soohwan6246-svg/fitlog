@@ -29,12 +29,15 @@
           </h1>
         </div>
 
-        <!-- 실시간 스톱워치 -->
+        <!-- 실시간 스톱워치 & 백업/설정 버튼 -->
         <div class="flex items-center space-x-2">
           <div class="flex items-center space-x-1.5 bg-zinc-950 px-3 py-1.5 rounded-full border border-zinc-800">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
             <span id="header-stopwatch" class="font-mono text-xs font-bold text-zinc-200">00:00</span>
           </div>
+          <button onclick="openBackupModal()" class="p-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 transition text-sm flex items-center justify-center shadow-sm" title="기록 백업 및 설정">
+            ⚙️
+          </button>
         </div>
       </div>
 
@@ -89,7 +92,9 @@
     <main id="tab-view-history" class="p-4 space-y-4 flex-1 hidden">
       <div class="flex items-center justify-between px-1">
         <h2 class="text-sm font-extrabold text-zinc-200">누적 운동 일지</h2>
-        <span class="text-[11px] text-zinc-500">기록이 브라우저에 자동 저장됩니다</span>
+        <button onclick="openBackupModal()" class="text-[11px] text-cyan-400 hover:underline font-bold flex items-center gap-1">
+          💾 백업 / 내보내기
+        </button>
       </div>
       <div id="history-items-container" class="space-y-3"></div>
     </main>
@@ -140,7 +145,7 @@
         </div>
 
         <div class="grid grid-cols-2 gap-2 pt-1">
-          <button onclick="copyGeminiPrompt()" class="py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-zinc-950 font-black text-xs transition shadow-md flex items-center justify-center gap-1.5">
+          <button id="gemini-copy-btn" onclick="copyGeminiPrompt()" class="py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-zinc-950 font-black text-xs transition shadow-md flex items-center justify-center gap-1.5">
             📋 프롬프트 복사하기
           </button>
           <a href="https://gemini.google.com" target="_blank" class="py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-black text-xs transition flex items-center justify-center gap-1.5 border border-zinc-700">
@@ -150,25 +155,37 @@
       </div>
     </main>
 
-    <!-- 플로팅 휴식 타이머 -->
+    <!-- 플로팅 휴식 타이머 바 (프리셋 탑재 업그레이드) -->
     <div id="floating-rest-bar" class="fixed bottom-24 left-1/2 -translate-x-1/2 w-full max-w-xl px-4 z-40 hidden">
-      <div class="bg-emerald-950/95 border border-emerald-500/70 backdrop-blur-md rounded-2xl p-3.5 shadow-2xl flex items-center justify-between">
-        <div class="flex items-center space-x-3">
-          <div class="w-9 h-9 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-black text-sm animate-spin">
-            ⏳
+      <div class="bg-emerald-950/95 border border-emerald-500/70 backdrop-blur-md rounded-2xl p-3.5 shadow-2xl space-y-2.5">
+        <!-- 상단: 카운트다운 & 기본 버튼 -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-9 h-9 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-black text-sm animate-spin">
+              ⏳
+            </div>
+            <div>
+              <p class="text-[11px] text-emerald-300 font-bold">세트 휴식 중</p>
+              <p id="rest-timer-countdown" class="font-mono text-xl font-black text-white">60초</p>
+            </div>
           </div>
-          <div>
-            <p class="text-[11px] text-emerald-300 font-bold">세트 휴식 중</p>
-            <p id="rest-timer-countdown" class="font-mono text-xl font-black text-white">60초</p>
+          <div class="flex items-center space-x-2">
+            <button onclick="adjustRestTimer(30)" class="px-2.5 py-1.5 rounded-lg bg-emerald-900/80 text-emerald-200 text-xs font-bold hover:bg-emerald-800">
+              +30초
+            </button>
+            <button onclick="stopRestTimer()" class="px-2.5 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 text-xs font-bold hover:bg-zinc-700">
+              건너뛰기
+            </button>
           </div>
         </div>
-        <div class="flex items-center space-x-2">
-          <button onclick="adjustRestTimer(30)" class="px-2.5 py-1.5 rounded-lg bg-emerald-900/80 text-emerald-200 text-xs font-bold hover:bg-emerald-800">
-            +30초
-          </button>
-          <button onclick="stopRestTimer()" class="px-2.5 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 text-xs font-bold hover:bg-zinc-700">
-            건너뛰기
-          </button>
+
+        <!-- 하단: 휴식 시간 프리셋 칩 (45s, 60s, 90s, 120s) -->
+        <div class="flex items-center gap-1.5 pt-2 border-t border-emerald-900/60 text-xs">
+          <span class="text-[10px] text-emerald-300/80 font-bold mr-0.5">시간 설정:</span>
+          <button onclick="setRestPreset(45)" class="px-2 py-1 rounded-lg bg-emerald-900/50 hover:bg-emerald-800 text-emerald-200 text-[11px] font-bold font-mono">45초</button>
+          <button onclick="setRestPreset(60)" class="px-2 py-1 rounded-lg bg-emerald-900/50 hover:bg-emerald-800 text-emerald-200 text-[11px] font-bold font-mono">60초</button>
+          <button onclick="setRestPreset(90)" class="px-2 py-1 rounded-lg bg-emerald-900/50 hover:bg-emerald-800 text-emerald-200 text-[11px] font-bold font-mono">90초</button>
+          <button onclick="setRestPreset(120)" class="px-2 py-1 rounded-lg bg-emerald-900/50 hover:bg-emerald-800 text-emerald-200 text-[11px] font-bold font-mono">120초</button>
         </div>
       </div>
     </div>
@@ -180,7 +197,7 @@
       </button>
     </footer>
 
-    <!-- 운동 종목 선택 모달 -->
+    <!-- 모달 1: 운동 종목 선택 모달 -->
     <div id="modal-exercise-selector" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center hidden">
       <div class="w-full max-w-xl bg-zinc-900 border border-zinc-800 rounded-t-3xl sm:rounded-3xl max-h-[88vh] flex flex-col overflow-hidden">
         
@@ -219,51 +236,88 @@
       </div>
     </div>
 
-    <!-- 토스트 알림 플로팅 -->
-    <div id="toast-message" class="fixed top-6 left-1/2 -translate-x-1/2 bg-zinc-800 border border-zinc-700 text-white text-xs font-bold px-4 py-2.5 rounded-full shadow-2xl z-50 transition-all opacity-0 pointer-events-none duration-300">
-      알림
+    <!-- 모달 2: 데이터 백업 및 복원 모달 (업그레이드) -->
+    <div id="modal-backup" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+      <div class="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-3xl p-5 space-y-4 shadow-2xl">
+        <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+          <h3 class="font-black text-white text-sm flex items-center gap-1.5">
+            💾 데이터 백업 및 설정
+          </h3>
+          <button onclick="closeBackupModal()" class="text-zinc-500 hover:text-white text-base">✕</button>
+        </div>
+
+        <p class="text-xs text-zinc-400 leading-relaxed">
+          브라우저 캐시 삭제 시 운동 일지가 지워지는 것을 방지하기 위해 파일이나 텍스트로 보관할 수 있습니다.
+        </p>
+
+        <!-- 백업 액션 버튼 목록 -->
+        <div class="space-y-2 text-xs font-bold">
+          <!-- 1. JSON 파일 다운로드 -->
+          <button onclick="exportDataJson()" class="w-full py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-emerald-400 border border-zinc-700 flex items-center justify-center gap-2 transition">
+            📥 JSON 백업 파일 다운로드
+          </button>
+
+          <!-- 2. 텍스트로 전체 복사 (카톡/메모장용) -->
+          <button id="btn-copy-history-text" onclick="copyHistoryAsText()" class="w-full py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 flex items-center justify-center gap-2 transition">
+            📋 텍스트로 일지 전체 복사 (메모장/카톡 보관)
+          </button>
+
+          <!-- 3. 백업 파일 복원 -->
+          <label class="w-full py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 border border-zinc-700 flex items-center justify-center gap-2 cursor-pointer transition">
+            📤 백업 파일(JSON) 불러오기
+            <input type="file" accept=".json" onchange="importDataJson(event)" class="hidden">
+          </label>
+        </div>
+
+        <div class="pt-2 border-t border-zinc-800/80">
+          <button onclick="resetAllData()" class="w-full py-2 rounded-xl text-red-500 hover:bg-red-950/30 text-xs font-semibold transition">
+            전체 기록 초기화
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 플로팅 토스트 피드백 알림 (애니메이션 탑재) -->
+    <div id="toast-message" class="fixed top-6 left-1/2 -translate-x-1/2 bg-zinc-800/95 border border-emerald-500/60 text-white text-xs font-bold px-5 py-2.5 rounded-full shadow-2xl z-50 transition-all duration-300 transform -translate-y-4 opacity-0 pointer-events-none flex items-center gap-2 backdrop-blur-md">
+      <span id="toast-icon">📋</span>
+      <span id="toast-text">알림</span>
     </div>
 
   </div>
 
   <!-- 핵심 자바스크립트 로직 -->
   <script>
-    // --- 머신 중심의 풍부한 운동 데이터베이스 ---
+    // --- 머신 특화 풍부한 운동 데이터베이스 ---
     const BASE_EXERCISES = [
-      // 가슴 (머신 우선)
       { id: 'machine_chest_press', name: '머신 체스트 프레스', part: '가슴', equip: '머신', target: '대흉근 전반 (중간 가슴)' },
       { id: 'incline_machine_press', name: '인클라인 머신 프레스', part: '가슴', equip: '머신', target: '쇄골두 (상부 윗가슴)' },
       { id: 'pec_deck_fly', name: '펙 덱 플라이 머신', part: '가슴', equip: '머신', target: '대흉근 안쪽 모아주기' },
       { id: 'smith_incline_press', name: '스미스머신 인클라인 벤치프레스', part: '가슴', equip: '바벨', target: '상부 가슴 고중량' },
       { id: 'bench_press', name: '바벨 벤치프레스', part: '가슴', equip: '바벨', target: '대흉근 전반' },
 
-      // 등 (머신 & 케이블 우선)
       { id: 'lat_pulldown', name: '랫 풀 다운', part: '등', equip: '머신', target: '광배근 상부 (역삼각형)' },
       { id: 'cable_seated_row', name: '케이블 시티드 로우', part: '등', equip: '케이블', target: '광배근 중하부 및 등 두께' },
       { id: 'hammer_iso_row', name: '시티드 머신 로우', part: '등', equip: '머신', target: '등 중앙부' },
       { id: 'assisted_pullup', name: '어시스트 풀업 머신', part: '등', equip: '머신', target: '광배근 전체' },
 
-      // 어깨 (머신 우선)
       { id: 'machine_shoulder_press', name: '머신 숄더 프레스', part: '어깨', equip: '머신', target: '전면/측면 삼각근' },
       { id: 'reverse_pec_deck', name: '리버스 펙 덱 플라이 (후면 머신)', part: '어깨', equip: '머신', target: '후면 삼각근' },
       { id: 'cable_lateral_raise', name: '케이블 사이드 레터럴 레이즈', part: '어깨', equip: '케이블', target: '측면 삼각근 지속 장력' },
       { id: 'db_lateral_raise', name: '덤벨 사이드 레터럴 레이즈', part: '어깨', equip: '덤벨', target: '측면 삼각근' },
 
-      // 하체 (머신 우선)
       { id: 'leg_press', name: '파워 레그 프레스', part: '하체', equip: '머신', target: '대퇴사두근/둔근 고중량' },
       { id: 'leg_extension', name: '레그 익스텐션 머신', part: '하체', equip: '머신', target: '대퇴사두근 (허벅지 앞)' },
       { id: 'lying_leg_curl', name: '라잉 레그 컬 머신', part: '하체', equip: '머신', target: '햄스트링 (허벅지 뒤)' },
       { id: 'hip_abduction', name: '힙 어브덕션 머신', part: '하체', equip: '머신', target: '중둔근 (엉덩이 힙업)' },
       { id: 'squat', name: '바벨 백스쿼트', part: '하체', equip: '바벨', target: '하체 전신' },
 
-      // 팔 (케이블/머신)
       { id: 'cable_pushdown', name: '케이블 삼두 푸시 다운', part: '팔', equip: '케이블', target: '삼두근 외측두' },
       { id: 'cable_curl', name: '케이블 바이셉스 컬', part: '팔', equip: '케이블', target: '이두근 봉긋한 자극' },
       { id: 'preacher_curl_machine', name: '프리처 컬 머신', part: '팔', equip: '머신', target: '이두근 고립' }
     ];
 
-    const STORAGE_ACTIVE = 'fitlog_active_session_v3';
-    const STORAGE_HIST = 'fitlog_history_records_v3';
+    const STORAGE_ACTIVE = 'fitlog_active_session_v4';
+    const STORAGE_HIST = 'fitlog_history_records_v4';
 
     let appState = {
       stopwatchSeconds: 0,
@@ -276,7 +330,7 @@
       currentSession: null
     };
 
-    // 소리(비프음) 효과
+    // 소리(비프음) 효과 (Web Audio API)
     function playBeep() {
       try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -299,7 +353,7 @@
         appState.history = hist ? JSON.parse(hist) : [];
       } catch (e) {}
 
-      // 진행 중인 운동 불러오기 (덤벨 대신 머신 체스트 프레스 + 인클라인 머신 프레스 기본 탑재)
+      // 진행 중인 운동 불러오기
       try {
         const active = localStorage.getItem(STORAGE_ACTIVE);
         if (active) {
@@ -372,7 +426,7 @@
       document.getElementById('tab-hist-count').innerText = appState.history.length;
     }
 
-    // 칼로리 계산 (현실적인 웨이트 트레이닝 METs 기준)
+    // 현실적인 소모 칼로리 계산
     function calculateRealCalories(seconds, volume) {
       if (seconds === 0 && volume === 0) return 0;
       const baseMins = seconds / 60;
@@ -523,7 +577,7 @@
       target.completed = !target.completed;
       if (target.completed) {
         startRestTimer(60);
-        showToast('세트 완료! 60초 휴식 시작 🔥');
+        showToast('세트 완료! 60초 휴식 시작 🔥', '⏱️');
       }
       renderActiveWorkoutCards();
     }
@@ -540,13 +594,13 @@
       const last = sets[sets.length - 1];
       sets.push({ weight: last ? last.weight : 30, reps: last ? last.reps : 10, completed: false });
       renderActiveWorkoutCards();
-      showToast('마지막 세트가 복제되었습니다.');
+      showToast('마지막 세트가 복제되었습니다.', '📑');
     }
 
     function deleteSingleSet(exIdx, sIdx) {
       const sets = appState.currentSession.exercises[exIdx].sets;
       if (sets.length <= 1) {
-        showToast('최소 1개 세트는 유지되어야 합니다.');
+        showToast('최소 1개 세트는 유지되어야 합니다.', '⚠️');
         return;
       }
       sets.splice(sIdx, 1);
@@ -558,11 +612,11 @@
       if (confirm(`'${name}' 종목을 삭제하시겠습니까?`)) {
         appState.currentSession.exercises.splice(exIdx, 1);
         renderActiveWorkoutCards();
-        showToast('종목이 삭제되었습니다.');
+        showToast('종목이 삭제되었습니다.', '🗑️');
       }
     }
 
-    // 휴식 타이머
+    // --- 휴식 타이머 & 프리셋 기능 ---
     let restTimerInterval = null;
     function startRestTimer(sec) {
       clearInterval(restTimerInterval);
@@ -576,25 +630,35 @@
         if (appState.restSecondsLeft <= 0) {
           stopRestTimer();
           playBeep();
-          showToast('⏰ 휴식 종료! 다음 세트 들어갑시다!');
+          showToast('⏰ 휴식 종료! 다음 세트 들어갑시다!', '🔔');
         } else {
           updateRestCountdownText();
         }
       }, 1000);
     }
+
     function updateRestCountdownText() {
       document.getElementById('rest-timer-countdown').innerText = `${appState.restSecondsLeft}초`;
     }
+
     function adjustRestTimer(delta) {
       appState.restSecondsLeft = Math.max(0, appState.restSecondsLeft + delta);
       updateRestCountdownText();
+      showToast(`${delta > 0 ? '+' : ''}${delta}초 변경됨`, '⏱️');
     }
+
+    function setRestPreset(sec) {
+      appState.restSecondsLeft = sec;
+      updateRestCountdownText();
+      showToast(`휴식 시간 ${sec}초 설정`, '⚡');
+    }
+
     function stopRestTimer() {
       clearInterval(restTimerInterval);
       document.getElementById('floating-rest-bar').classList.add('hidden');
     }
 
-    // 운동 선택 모달 (머신 최우선 정렬)
+    // 운동 선택 모달
     function openExerciseSelectorModal() {
       document.getElementById('modal-exercise-selector').classList.remove('hidden');
       renderExercisePickerItems();
@@ -661,7 +725,7 @@
           });
           closeExerciseSelectorModal();
           renderActiveWorkoutCards();
-          showToast(`'${item.name}' 추가 완료!`);
+          showToast(`'${item.name}' 추가 완료!`, '✅');
         };
 
         el.innerHTML = `
@@ -683,7 +747,7 @@
     // 오늘 운동 완료 & 일지 저장
     function finishTodayWorkoutSession() {
       if (appState.currentSession.exercises.length === 0) {
-        showToast('저장할 운동이 없습니다.');
+        showToast('저장할 운동이 없습니다.', '⚠️');
         return;
       }
 
@@ -724,7 +788,7 @@
       appState.currentSession = { durationSeconds: 0, exercises: [] };
       saveActive();
 
-      showToast('🎉 오늘 운동이 성공적으로 일지에 저장되었습니다!');
+      showToast('오늘 운동이 일지에 안전하게 저장되었습니다!', '🎉');
       switchMainTab('history');
     }
 
@@ -791,7 +855,7 @@
         appState.history.splice(idx, 1);
         saveHistory();
         renderHistoryView();
-        showToast('일지가 삭제되었습니다.');
+        showToast('일지가 삭제되었습니다.', '🗑️');
       }
     }
 
@@ -849,11 +913,112 @@
       document.getElementById('gemini-prompt-box').value = prompt;
     }
 
+    // Gemini 프롬프트 복사 & 시각적 피드백
     function copyGeminiPrompt() {
       const box = document.getElementById('gemini-prompt-box');
       box.select();
       navigator.clipboard.writeText(box.value);
-      showToast('📋 Gemini 프롬프트가 복사되었습니다!');
+
+      // 토스트 피드백
+      showToast('클립보드에 복사되었습니다!', '📋');
+
+      // 버튼 시각적 반응
+      const btn = document.getElementById('gemini-copy-btn');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '✅ 복사 완료!';
+      btn.className = 'py-3 rounded-xl bg-emerald-500 text-zinc-950 font-black text-xs transition shadow-md flex items-center justify-center gap-1.5';
+
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.className = 'py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-zinc-950 font-black text-xs transition shadow-md flex items-center justify-center gap-1.5';
+      }, 2000);
+    }
+
+    // --- 백업 / 내보내기 모달 로직 (신규) ---
+    function openBackupModal() {
+      document.getElementById('modal-backup').classList.remove('hidden');
+    }
+    function closeBackupModal() {
+      document.getElementById('modal-backup').classList.add('hidden');
+    }
+
+    // 1. JSON 파일로 내보내기
+    function exportDataJson() {
+      const backupData = {
+        appName: 'FITLOG_PRO',
+        exportedAt: new Date().toISOString(),
+        history: appState.history,
+        activeSession: appState.currentSession
+      };
+      const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `fitlog_backup_${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('백업 파일이 다운로드되었습니다.', '📥');
+      closeBackupModal();
+    }
+
+    // 2. 전체 일지 텍스트로 복사 (카톡/메모장용)
+    function copyHistoryAsText() {
+      if (appState.history.length === 0) {
+        showToast('복사할 운동 일지가 없습니다.', '⚠️');
+        return;
+      }
+
+      let textOutput = `[FITLOG PRO 누적 운동 기록]\n총 운동 횟수: ${appState.history.length}회\n내보낸 날짜: ${new Date().toLocaleDateString()}\n--------------------\n`;
+
+      appState.history.forEach((h, idx) => {
+        textOutput += `\n📅 ${h.date} (시간: ${h.durationText} / 볼륨: ${h.totalVolume.toLocaleString()}kg)\n`;
+        h.exercises.forEach(ex => {
+          textOutput += `▶ ${ex.name} (${ex.sets.length}세트)\n`;
+          ex.sets.forEach((s, sIdx) => {
+            textOutput += `   ${sIdx + 1}세트: ${s.weight}kg x ${s.reps}회 ${s.completed ? '(완료)' : ''}\n`;
+          });
+        });
+      });
+
+      navigator.clipboard.writeText(textOutput);
+      showToast('전체 일지 텍스트가 클립보드에 복사되었습니다!', '📋');
+
+      const copyBtn = document.getElementById('btn-copy-history-text');
+      const orig = copyBtn.innerText;
+      copyBtn.innerText = '✅ 복사 완료!';
+      setTimeout(() => { copyBtn.innerText = orig; }, 2000);
+    }
+
+    // 3. JSON 파일 불러와 복구
+    function importDataJson(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          if (parsed.history && Array.isArray(parsed.history)) {
+            appState.history = parsed.history;
+            saveHistory();
+            renderHistoryView();
+            closeBackupModal();
+            showToast('백업 기록을 성공적으로 복원했습니다!', '🎉');
+          } else {
+            alert('올바른 백업 파일 형식이 아닙니다.');
+          }
+        } catch (err) {
+          alert('파일을 읽는 도중 오류가 발생했습니다.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function resetAllData() {
+      if (confirm('정말로 모든 운동 기록을 초기화할까요? 이 작업은 되돌릴 수 없습니다.')) {
+        localStorage.clear();
+        location.reload();
+      }
     }
 
     // 탭 전환
@@ -891,13 +1056,24 @@
       }
     }
 
-    function showToast(msg) {
+    // 부드러운 애니메이션 토스트 도우미
+    let toastTimeout = null;
+    function showToast(msg, icon = '📋') {
       const t = document.getElementById('toast-message');
-      t.innerText = msg;
-      t.classList.remove('opacity-0', 'pointer-events-none');
-      setTimeout(() => {
-        t.classList.add('opacity-0', 'pointer-events-none');
-      }, 2500);
+      const tText = document.getElementById('toast-text');
+      const tIcon = document.getElementById('toast-icon');
+
+      tText.innerText = msg;
+      tIcon.innerText = icon;
+
+      clearTimeout(toastTimeout);
+      t.classList.remove('opacity-0', 'pointer-events-none', '-translate-y-4');
+      t.classList.add('opacity-100', 'translate-y-0');
+
+      toastTimeout = setTimeout(() => {
+        t.classList.remove('opacity-100', 'translate-y-0');
+        t.classList.add('opacity-0', 'pointer-events-none', '-translate-y-4');
+      }, 2400);
     }
 
     // 앱 실행
